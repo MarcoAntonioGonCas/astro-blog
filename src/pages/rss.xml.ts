@@ -17,7 +17,9 @@ export const GET: APIRoute = async({ params, request,site }) => {
         title: 'Blog de Marco',
         // `<description>` campo en el xml generado
         description: 'Un blog de Astro',
-
+        xmlns:{
+            media:"http://search.yahoo.com/mrss/"
+        },
         // Usa el "site" desde el contexto del endpoint
         // https://docs.astro.build/en/reference/api-reference/#contextsite
         site: site!,
