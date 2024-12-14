@@ -1,0 +1,81 @@
+---
+import MainLayout from "@layouts/MainLayout.astro";
+import { Image } from "astro:assets";
+
+import post05img from "@images/post-05.png";
+import Picture from "astro/components/Picture.astro";
+
+---
+
+<MainLayout
+    title="Imagenes"
+>
+    <div class="text-5xl">Imagenes</div>
+
+<!-- 
+    <img
+        loading="eager"
+        src="/assets/images/post-05.png"
+        alt="imagen"
+        width="100px"
+    > -->
+
+
+    <Image src={post05img} alt="Descripción" width="100" height={"100"} />
+    <Image src={post05img} alt="Descripción" width="100" height={"100"} />
+
+    <Image
+        src={post05img}
+        alt={"Descripción"}
+        width={"900"}
+        height={"900"}
+        style={
+            {
+                width: "100px",
+                height: "100px",
+            }
+        }
+    >
+
+    </Image>
+
+
+    <Image 
+        src={post05img} 
+        alt="Descripción" 
+        width="300" 
+        height={"300"} 
+        quality="high"    
+    />
+    
+    <Picture 
+        formats={["webp","avif","jpeg"]}
+        src={post05img} 
+        alt="Descripción" 
+        quality="high"
+        widths={[300,600,900,post05img.width]}    
+        sizes={`(max-width:400px) 300px, (max-width: 700px) 600px, (max-width:100px) 900px, ${post05img.width}px`}
+    />
+
+
+    <div
+
+    
+        style={
+            {
+                height: "1000px",
+            }
+        }
+
+    >
+
+    </div>
+<!-- 
+    <img
+        loading="lazy"
+        src="/assets/images/post-01.png"
+        alt="imagen"
+        width="100px"
+    > -->
+
+</MainLayout>

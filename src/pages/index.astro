@@ -1,0 +1,54 @@
+---
+import { siteConfig } from "src/constants/site-config";
+import MainLayout from "../layouts/MainLayout.astro";
+import { getCollection } from "astro:content";
+import { bundlerModuleNameResolver } from "typescript";
+import TypeBlogPost from "@components/Blogs/TypeBlogPost.astro";
+
+
+const blogsPost = await getCollection("blog",(post)=>{
+        return post.data.isDraft === false
+    })
+
+
+---
+
+<MainLayout
+	title="Marco blogs"
+>
+	<section class="bg-white dark:bg-gray-900">
+
+	
+	
+    <div class="container px-6 py-10 mx-auto">
+        <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white">{siteConfig.title}</h1>
+
+		<a href="/blog/1" class="mt-7 text-blue-500">Blog paginado</a>
+
+		<a href="/authors">Autores</a>
+       
+		<div class="grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2">
+			{
+				blogsPost.map(post=>{
+					return <TypeBlogPost
+						post={post}
+					>
+
+					</TypeBlogPost>
+
+					
+				})
+			}
+
+
+		</div>
+
+    </div>
+	</section>
+</MainLayout>
+
+<style>
+	a{
+		@apply text-blue-500 hover:underline;
+	}
+</style>

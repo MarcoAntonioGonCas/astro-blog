@@ -1,0 +1,98 @@
+---
+import type { GetStaticPaths } from "astro";
+import BlogLayout from "@layouts/BlogLayout.astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
+import { Formatter } from "@utils/formatter";
+
+export const getStaticPaths = (async () => {
+    
+
+
+    const blogCollections = await getCollection("blog");
+
+    
+
+    return blogCollections.map((post)=>({
+        params:{
+            slug:post.slug
+        },
+        props:{
+            post:post
+        }
+    }))
+}) satisfies GetStaticPaths;
+
+
+const {post} = Astro.props
+const {Content,headings} = await post.render();
+const frontmatter = post.data;
+
+
+
+const {data:author} = await getEntry("author",frontmatter.author.id);
+
+
+
+
+
+---
+
+
+<BlogLayout
+    title={frontmatter.title}
+>
+    <h1 class="text-xs text-gray-500 mb-0"> {frontmatter.title} </h1>
+    <!-- <h4 class="text-md text-gray-400 mb-0"> {frontmatter.author} </h4> -->
+
+
+    <!-- Author -->
+    <div class="text-md text-gray-400 flex mt-10">
+        <Image
+        src={author.avatar}
+        alt={author.name}
+        width={50}
+        height={50}
+        class="object-cover  rounded-full"
+        />
+
+        <div class="flex flex-col ml-5">
+            <a href={`/blog/${frontmatter.author.id}`}>{author.name}</a>
+            <span>{Formatter.formatDate(frontmatter.date)}</span>
+        </div>
+        
+        
+    </div>
+    <!-- Fin de author -->
+
+    <Image
+        src={frontmatter.image}
+        alt={frontmatter.title}
+        width={600}
+        class="object-cover w-full h-[250px] mt-5 rounded-md"
+        transition:name={`${post.slug}-image`}
+
+    >
+
+    </Image>
+
+    <h3>Tabla de contenidos</h3>
+
+    <ol>
+        {
+            headings.map((heading,index)=>(
+                <li>
+                    <a href={`#${heading.slug}`}>{index+1} -  {heading.text}</a>
+                </li>
+            ))
+        }
+    </ol>
+
+
+    <Content />
+
+    <div class="my-10">
+        <a href="#btn-back" class="text-blue-400">Ir arriba</a>
+    </div>
+</BlogLayout>

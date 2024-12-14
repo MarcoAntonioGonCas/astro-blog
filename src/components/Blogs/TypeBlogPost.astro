@@ -1,0 +1,42 @@
+---
+import { Formatter } from "@utils/formatter";
+import Image from "astro/components/Image.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+    post: CollectionEntry<"blog">;
+}
+
+
+
+const { post} = Astro.props;
+const frontmatter = post.data;
+
+const validDate = frontmatter.date ? new Date(frontmatter.date) : new Date();
+const dateString = Formatter.formatDate(validDate);
+
+---
+
+
+<div class="lg:flex">
+    
+    <Image 
+      class="object-cover w-full h-56 rounded-lg lg:w-64" 
+      src={frontmatter.image}
+      width={500}
+      height={500}
+      quality={"low"} 
+      alt={frontmatter.title} 
+      transition:name={`${post.slug}-image`}
+      />
+  
+    <div class="flex flex-col justify-between py-6 lg:mx-6">
+      <!-- <h2>{frontmatter.title}</h2> -->
+      <a href={`/posts/${post.slug}`} class="text-xl font-semibold text-white hover:underline">
+        {frontmatter.description}
+      </a>
+  
+      <span class="text-sm text-gray-300">El: {dateString} </span>
+    </div>
+  </div>
+  

@@ -1,0 +1,31 @@
+---
+import { siteConfig } from "src/constants/site-config";
+import { ViewTransitions } from "astro:transitions";
+import '@styles/blog.css'
+
+
+const { title = siteConfig.title } = Astro.props;
+
+
+
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+	<ViewTransitions></ViewTransitions>
+  </head>
+  <body class="bg-slate-900 text-slate-100 flex flex-col min-h-screen">
+    <a onclick="history.back()" href="#" id="btn-back" class="text-blue-400">Regresar</a>
+    
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
+
+

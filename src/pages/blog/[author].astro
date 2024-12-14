@@ -1,0 +1,87 @@
+---
+import TypeBlogPost from "@components/Blogs/TypeBlogPost.astro";
+import MainLayout from "@layouts/MainLayout.astro";
+import type { GetStaticPaths } from "astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { siteConfig } from "src/constants/site-config";
+
+
+
+
+export const getStaticPaths = (async() => {
+    const authorCollections = await getCollection("author")
+    const blogsCollections = await getCollection("blog",(post)=>{
+        return post.data.isDraft === false
+    })
+
+    return authorCollections.map((author)=>{
+        return {
+            params:{
+                author:author.id
+            },
+            props:{
+                author:author.data,
+                blogsPost:blogsCollections.filter((blog)=> blog.data.author.id === author.id)
+            }
+        }
+    });
+
+}) satisfies GetStaticPaths;
+
+
+const {author,blogsPost} = Astro.props;
+
+---
+
+<MainLayout
+    title={author.name}
+
+>
+
+    <section class="bg-gray-900">
+        <div class="container px-6 py-10 mx-auto"> 
+            <h1 class="text-3xl font-semibold text-white capitalize lg:text-4xl">
+                {siteConfig.title}
+            </h1>
+
+            <a href="/" class="text-blue-500">Regresar</a>
+
+
+            <div class="text-md text-gray-400 mb-0 flex flex-row mt-2">
+                <Image
+                    src={author.avatar}
+                    alt={author.name}
+                    width={50}
+                    height={50}
+                    class="object-cover rounded-full"
+                />
+            </div>
+
+            <div class="text-md text-gray-400 flex flex-col mt-2">
+                <a> {author.name} </a>
+                <span>Listado de todos mis posts</span>
+            </div>
+
+            <div class="grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2">
+                {
+                    blogsPost.map(post=>{
+                        return <TypeBlogPost
+                            post={post}
+                        >
+    
+                        </TypeBlogPost>
+    
+                        
+                    })
+                }
+    
+    
+            </div>
+        </div>
+
+
+    </section>
+
+
+</MainLayout>

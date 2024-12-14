@@ -1,0 +1,37 @@
+---
+import {Formatter} from '@utils/formatter'
+
+const { frontmatter, url } = Astro.props;
+
+const {
+  title = "Astro",
+  date = new Date().toISOString(), // Por defecto en formato ISO
+  image = "https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+  description = "How to use sticky note for problem solving",
+} = frontmatter;
+
+// Convertir el valor `date` a un objeto Date
+const validDate = date ? new Date(date) : new Date();
+
+
+
+const dateString = Formatter.formatDate(validDate);
+
+console.log(frontmatter);
+---
+
+<div class="lg:flex">
+  <img 
+    class="object-cover w-full h-56 rounded-lg lg:w-64" 
+    src={image} 
+    alt={title} />
+
+  <div class="flex flex-col justify-between py-6 lg:mx-6">
+    <h2>{title}</h2>
+    <a href="#" class="text-xl font-semibold text-white hover:underline">
+      {description}
+    </a>
+
+    <span class="text-sm text-gray-300">El: {dateString} </span>
+  </div>
+</div>
